@@ -6,6 +6,8 @@
 
 #include "ctre/phoenix6/HootAutoReplay.hpp"
 
+//#include "frc/Timer.h"
+
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
 #include <optional>
@@ -39,6 +41,7 @@ public:
     void TestInit() override;
     void TestPeriodic() override;
     void TestExit() override;
+    //void ShooterAuto();
 
 private:
   // Initialize the SPARKs
@@ -57,6 +60,8 @@ private:
   SparkAbsoluteEncoder m_UDencounder = m_IntakeUD.GetAbsoluteEncoder();
   double EV1=0; 
   double EV2=1; 
+  //This makes a timwer 3/16/26//
+  //frc::Timer m_timer;
       // Joystick # matches where you put the joystick on driver station//
       //ALWAYS PUT AND CHECK THAT IT IS AT JOYSTICK 1 WHEN JUST TESTING REV MOTORS//
   frc::XboxController joystick{0};

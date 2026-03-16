@@ -10,6 +10,8 @@
 #include "subsystems/CommandSwerveDrivetrain.h"
 #include "Telemetry.h"
 
+class Robot;
+
 class RobotContainer {
 private:
     units::meters_per_second_t MaxSpeed = 1.0 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
@@ -35,6 +37,7 @@ private:
 public:
     subsystems::CommandSwerveDrivetrain drivetrain{TunerConstants::CreateDrivetrain()};
 
+
 private:
     /* Path follower */
     frc::SendableChooser<frc2::Command *> autoChooser;
@@ -43,6 +46,7 @@ private:
    frc::SendableChooser<frc2::Command *> autoChooser3;
    frc::SendableChooser<frc2::Command *> autoChooser4;
     frc::SendableChooser<frc2::Command *> autoChooser5;
+    
 
 
 public:

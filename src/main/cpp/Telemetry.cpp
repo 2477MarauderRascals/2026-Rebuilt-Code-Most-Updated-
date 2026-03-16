@@ -9,7 +9,7 @@ Telemetry::Telemetry(units::meters_per_second_t maxSpeed) : MaxSpeed{maxSpeed}
 
     /* Set up the module state Mechanism2d telemetry */
     for (size_t i = 0; i < m_moduleSpeeds.size(); ++i) {
-        frc::SmartDashboard::PutData("Module " + std::to_string(i), &m_moduleMechanisms[i]);
+        //frc::SmartDashboard::PutData("Module " + std::to_string(i), &m_moduleMechanisms[i]);
     }
 }
 

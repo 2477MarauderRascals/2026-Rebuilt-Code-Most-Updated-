@@ -6,6 +6,7 @@
 #include "LimelightHelpers.h"
 #include <frc2/command/CommandScheduler.h>
 #include <rev/config/SparkFlexConfig.h>
+#include "frc/Timer.h"
 
 // 3.9.26 KANEMOTO Added SmartDashboard library to give driver information about robot
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -110,8 +111,23 @@ void Robot::RobotPeriodic() {
         if (llMeasurement && llMeasurement->tagCount > 0 && units::math::abs(omega) < 2_tps) {
             m_container.drivetrain.AddVisionMeasurement(llMeasurement->pose, llMeasurement->timestampSeconds);
         }
-    }
+ 
+      }
+
 }
+
+// void Robot::ShooterAuto(){
+//    m_timer.Reset();
+//         m_timer.Start();
+//   if (m_timer.Get() <= 5.0_s){
+
+//      m_rightMS.Set(0.55);
+//     m_Conveyor.Set(0.1);
+//     m_leftMS.Set(-0.55);
+//     m_BottomLeftMS.Set(0.55);
+//   }
+   
+// }
 
 void Robot::DisabledInit() {}
 
@@ -182,9 +198,9 @@ void Robot::TeleopPeriodic() {/**
   
   else if (joystick.GetRightTriggerAxis()>= 0.2) {
     m_rightMS.Set(0.55);
-    m_IntakeR.Set(0.45);
     m_Conveyor.Set(0.1);
     m_leftMS.Set(-0.55);
+    m_IntakeR.Set(0.45);
   }
 
   else {
