@@ -17,6 +17,10 @@
 #include <rev/AbsoluteEncoder.h>
 #include <rev/SparkAbsoluteEncoder.h>
  //Added testing motors (2/19/26)
+
+// Adds library to control REV Blinkin LEDs
+#include <frc/motorcontrol/Spark.h>
+
 using namespace rev::spark;
 
 class Robot : public frc::TimedRobot {
@@ -49,13 +53,26 @@ private:
   SparkFlex m_IntakeR{7, SparkFlex::MotorType::kBrushless};
   SparkFlex m_IntakeUD{8, SparkFlex::MotorType::kBrushless};
   SparkFlex m_Conveyor{9, SparkFlex::MotorType::kBrushless};
+  // This is the line of code, when using an absolute encoder with a SparkFlex motor (3/6/26)//
   SparkAbsoluteEncoder m_UDencounder = m_IntakeUD.GetAbsoluteEncoder();
   double EV1=0; 
   double EV2=1; 
       // Joystick # matches where you put the joystick on driver station//
       //ALWAYS PUT AND CHECK THAT IT IS AT JOYSTICK 1 WHEN JUST TESTING REV MOTORS//
-  frc::XboxController joystick{1};
+  frc::XboxController joystick{0};
   
+  
+   // 3.9.26 KANEMOTO
+  // Added memory variables for intake encoder.  Allows for continuous movement as encoder position changes.
+  // m_IntakeUDmovingUP lets the encoder remember if the intake was moving up.  
+  // m_IntakeUDmovingDOWN lets the encoder remember if the intake was moving down.
+  bool m_IntakeUDmovingUP = false;
+  bool m_IntakeUDmovingDOWN = false;
+
+  // Sets REV Blinkin LED controller to PWM PORT 0 on rio
+  frc::Spark m_LEDStrip {0};
+
+
   static constexpr bool kUseLimelight = false;
 
     frc2::Command *m_autonomousCommand;

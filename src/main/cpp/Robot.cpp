@@ -4,9 +4,12 @@
 
 #include "Robot.h"
 #include "LimelightHelpers.h"
-
 #include <frc2/command/CommandScheduler.h>
 #include <rev/config/SparkFlexConfig.h>
+
+// 3.9.26 KANEMOTO Added SmartDashboard library to give driver information about robot
+#include <frc/smartdashboard/SmartDashboard.h>
+
 //Updated SHOOTER MOTOR SPEED (2/26/26)//
 //Added SparkFlex config (2/19/26)//
 Robot::Robot() {/*
@@ -139,32 +142,61 @@ void Robot::TeleopPeriodic() {/**
    * Y value because its forward direction is negative.
    * //motorIdentifier.Set(#) controls the SPEED of the motor. 1= 100% SPEED FORWARD, -1 = 100% SPEED REVERSE, 0 = 0% SPEED OFF
    */
-  if (joystick.GetRightTriggerAxis()>=0.8) {
+
+
+// 3.9.26 KANEMOTO Added SmartDashboard information for driver
+// Added intake information to SmartDashboard
+//Added LED status for intake position
+
+// checks the current encoder position
+  double  position_degrees = m_UDencounder.GetPosition();
+
+  // Start: changed them into comments, so that the dashboard doesn't get cluttered with junk M.Davin 3/11/26
+  //frc::SmartDashboard::PutNumber("Intake Position", position_degrees);
+  //frc::SmartDashboard::PutBoolean("Moving UP", m_IntakeUDmovingUP);
+ // frc::SmartDashboard::PutBoolean("Moving DOWN", m_IntakeUDmovingDOWN);
+ // frc::SmartDashboard::PutNumber("Left Trigger", joystick.GetLeftTriggerAxis());
+ // End: M.Davin 3/11/26
+
+  if (position_degrees <= 0.22) {
+    m_LEDStrip.Set(0.87); //solid blue when intake is up
+  }
+
+  else if (position_degrees >= 0.57) {
+    m_LEDStrip.Set (0.67); //solid gold when intake is down
+  }
+
+  else {
+    m_LEDStrip.Set (0.93); //solid white when intake is moving
+  }
+
+
+  if (joystick.GetRightTriggerAxis()>= 0.8) {
     m_rightMS.Set(0.8);
-     m_BottomLeftMS.Set(0.8);
+    m_IntakeR.Set(0.45);
     m_Conveyor.Set(0.1);
     m_leftMS.Set(-0.8);
 
   std::cout <<"message testing hitting right bumper button " << std::endl;
   } 
   
-  else if (joystick.GetRightTriggerAxis()>=0.2){
-     m_rightMS.Set(0.5);
-     m_BottomLeftMS.Set(0.5);
+  else if (joystick.GetRightTriggerAxis()>= 0.2) {
+    m_rightMS.Set(0.55);
+    m_IntakeR.Set(0.45);
     m_Conveyor.Set(0.1);
-    m_leftMS.Set(-0.5);
+    m_leftMS.Set(-0.55);
   }
 
-  else{
+  else {
     m_leftMS.Set(0);
     m_rightMS.Set(0);
-m_BottomLeftMS.Set(0);
-m_Conveyor.Set(0);
+    m_IntakeR.Set(0);
+    m_Conveyor.Set(0);
   }
 //When the button is pressed, set motors to go down to limit and set intake to run and when it hit the limit, 
 //stop elevation but still continue running intake. When relased buttoned set motors go to up until you hit the limit//
-if (joystick.GetLeftBumper()){
-    m_IntakeR.Set(0.5);
+if (joystick.GetLeftBumper()) {
+    m_BottomLeftMS.Set(0.8);
     //change GetPosition to 1 if it starts to moves on its own//
     //Doing this should make it so that it doesn't move on its own.// 
 
@@ -174,37 +206,81 @@ if (joystick.GetLeftBumper()){
   //std::cout <<"message testing hitting left bumper button " << std::endl;
   }else if (joystick.GetRightBumper()){
     m_IntakeR.Set(-0.5);
+    m_BottomLeftMS.Set(-0.4);
   }
 
   else{
-    m_IntakeR.Set(0); 
-    //change GetPosition to 0 if it starts to move on 
+    m_BottomLeftMS.Set(0);
+        //change GetPosition to 0 if it starts to move on 
 
     //if(m_UDencounder.GetPosition()==)
 //{ m_IntakeUD.Set(0);}else{ m_IntakeUD.Set(-0.1);}
 }
+
 // this should make it so that the intake moves up and down manually (3/4/26)//
-//psotive is down negative is up//
-if (joystick.GetLeftTriggerAxis()) {
-  if (double position_degrees = m_UDencounder.GetPosition()>=0.35){
- m_IntakeUD.Set(-0.08);
-sleep(2);
- } 
+// for encoder position, 1 is down and 0 is up//
+
+// 3.9.26 KANEMOTO
+// Added memory variables from Robot.h to existing code
+// Added DOWN as the intake HOME position
+
+// REVCLIENT ADJUSTMENTS
+// apply zero offset in REVclient UP = 0.2
+// set Forward Soft Limit and Reverse Soft Limit in REVclient 
+// Toggle ON, set Forward Limit to 0.57 and set Reverse Limit to 0.18
+// RUN motor in REVclient to test limits
+// Burn Flash to save
+
+// Read all comments before operating LeftTrigger
+
+// if the left trigger is held down firmly
+if (joystick.GetLeftTriggerAxis() >= 0.2) {
+
+
+// if the intake is DOWN start moving the intake UP to position 0.22
+  if (position_degrees >= 0.55 && !m_IntakeUDmovingDOWN && !m_IntakeUDmovingUP) {
+    m_IntakeUDmovingUP = true; 
+  } 
  
-  else if (double position_degrees = m_UDencounder.GetPosition()<=0.05){
- m_IntakeUD.Set(0.05);
-sleep(1);
- }
+// if the intake is UP start moving the intake DOWN to position 0.55
+  else if (!m_IntakeUDmovingDOWN && !m_IntakeUDmovingUP) {
+    m_IntakeUDmovingDOWN = true;
+  }
 
- else {m_IntakeUD.Set(0);}
-}
-//else if (joystick.GetLeftTriggerAxis()<0.05) {
- //m_IntakeUD.Set(-0.08);
-//}
+// the intake will continue moving UP until it STOPS at position 0.22
+    if (m_IntakeUDmovingUP) {
+      if (position_degrees > 0.22) {
+        m_IntakeUD.Set(-0.145);
+      } 
+      else {
+        m_IntakeUD.Set(0);
+     }
+    }
+// the intake will continue moving DOWN until it STOPS at position 0.55
+    else if (m_IntakeUDmovingDOWN) {
+      if (position_degrees < 0.55) {
+        m_IntakeUD.Set(0.08);
+      } 
+      else {
+        m_IntakeUD.Set(0);
+     }
+    }
 
-else {
-m_IntakeUD.Set(0);
-}
+// don't do anything if the intake isn't already moving
+    else {
+      m_IntakeUD.Set(0);
+    }
+  }
+
+// stops motor and resets memory variables when trigger is released
+  else {
+    m_IntakeUD.Set(0);
+    m_IntakeUDmovingUP = false;
+    m_IntakeUDmovingDOWN = false;
+  }
+
+// KANEMOTO END
+
 
 }
 

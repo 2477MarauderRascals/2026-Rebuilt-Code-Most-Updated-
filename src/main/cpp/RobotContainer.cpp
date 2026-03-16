@@ -11,8 +11,18 @@
 
 RobotContainer::RobotContainer()
 {
-    autoChooser = pathplanner::AutoBuilder::buildAutoChooser("NewAuto");
+    autoChooser = pathplanner::AutoBuilder::buildAutoChooser("Test Auto");
+    autoChooser1 = pathplanner::AutoBuilder::buildAutoChooser("RED LEFT AUTO.auto");
+    autoChooser2 = pathplanner::AutoBuilder::buildAutoChooser("RED RIGHT AUTO.auto");
+    autoChooser3 = pathplanner::AutoBuilder::buildAutoChooser("BLUE LEFT AUTO.auto");
+    autoChooser4 = pathplanner::AutoBuilder::buildAutoChooser("BLUE RIGHT AUTO.auto");
+    autoChooser5 = pathplanner::AutoBuilder::buildAutoChooser("test.auto");
     frc::SmartDashboard::PutData("Auto Mode", &autoChooser);
+     frc::SmartDashboard::PutData("Auto Mode", &autoChooser1);
+     frc::SmartDashboard::PutData("Auto Mode", &autoChooser2);
+     frc::SmartDashboard::PutData("Auto Mode", &autoChooser3);
+     frc::SmartDashboard::PutData("Auto Mode", &autoChooser4);
+     frc::SmartDashboard::PutData("Auto Mode", &autoChooser5);
 
     ConfigureBindings();
 }
@@ -39,7 +49,8 @@ void RobotContainer::ConfigureBindings()
     );
 
     joystick.A().WhileTrue(drivetrain.ApplyRequest([this]() -> auto&& { return brake; }));
-    joystick.B().WhileTrue(drivetrain.ApplyRequest([this]() -> auto&& {
+    // Changed the joystick.B, to joystick.X M.Davin 3/11/26
+    joystick.X().WhileTrue(drivetrain.ApplyRequest([this]() -> auto&& {
         return point.WithModuleDirection(frc::Rotation2d{-joystick.GetLeftY(), -joystick.GetLeftX()});
     }));
 
@@ -62,7 +73,8 @@ void RobotContainer::ConfigureBindings()
     (joystick.Start() && joystick.X()).WhileTrue(drivetrain.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
 
     // reset the field-centric heading on left bumper press
-    joystick.LeftBumper().OnTrue(drivetrain.RunOnce([this] { drivetrain.SeedFieldCentric(); }));
+    joystick.B().OnTrue(drivetrain.RunOnce([this] { drivetrain.SeedFieldCentric(); }));
+    // Using the B button for Mark to calibrate pigeon heading to be set to zero when pressed, M.Davin (3/11/26)
 
     drivetrain.RegisterTelemetry([this](auto const &state) { logger.Telemeterize(state); });
 }

@@ -14,7 +14,8 @@ class RobotContainer {
 private:
     units::meters_per_second_t MaxSpeed = 1.0 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
     //changed MaxAngularRate from 0.75 to 0.6. makes robot a little slower (2/19/26)//
-    units::radians_per_second_t MaxAngularRate = 0.5_tps; // 3/4 of a rotation per second max angular velocity
+    //sped up to .625 from .5 foor the Swerve Turning Velocity M.Davin (3/11/26)
+    units::radians_per_second_t MaxAngularRate = 0.625_tps; // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     swerve::requests::FieldCentric drive = swerve::requests::FieldCentric{}
@@ -37,6 +38,12 @@ public:
 private:
     /* Path follower */
     frc::SendableChooser<frc2::Command *> autoChooser;
+    frc::SendableChooser<frc2::Command *> autoChooser1;
+    frc::SendableChooser<frc2::Command *> autoChooser2;
+   frc::SendableChooser<frc2::Command *> autoChooser3;
+   frc::SendableChooser<frc2::Command *> autoChooser4;
+    frc::SendableChooser<frc2::Command *> autoChooser5;
+
 
 public:
     RobotContainer();
