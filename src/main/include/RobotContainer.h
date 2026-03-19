@@ -9,6 +9,7 @@
 #include <frc2/command/button/CommandXboxController.h>
 #include "subsystems/CommandSwerveDrivetrain.h"
 #include "Telemetry.h"
+#include "subsystems/ShooterSystem.h"
 
 class Robot;
 
@@ -32,11 +33,13 @@ private:
      *       define a destructor to un-register the telemetry from the drivetrain */
     Telemetry logger{MaxSpeed};
 
+
+
     frc2::CommandXboxController joystick{0};
 
 public:
     subsystems::CommandSwerveDrivetrain drivetrain{TunerConstants::CreateDrivetrain()};
-
+    ShooterSystem& GetShooter();
 
 private:
     /* Path follower */
@@ -46,13 +49,17 @@ private:
    frc::SendableChooser<frc2::Command *> autoChooser3;
    frc::SendableChooser<frc2::Command *> autoChooser4;
     frc::SendableChooser<frc2::Command *> autoChooser5;
+    ShooterSystem Shoot1;
+
     
 
 
 public:
     RobotContainer();
 
+
     frc2::Command *GetAutonomousCommand();
+
 
 private:
     void ConfigureBindings();

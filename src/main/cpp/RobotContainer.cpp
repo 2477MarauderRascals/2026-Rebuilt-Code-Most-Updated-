@@ -3,34 +3,45 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "RobotContainer.h"
-//#include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/button/RobotModeTriggers.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
+#include <frc2/command/Commands.h>
+
 
 RobotContainer::RobotContainer()
 {
 
-   // pathplanner::NamedCommands::registerCommand("Shooter", frc2::InstantCommand([this] {m_robot.ShooterAuto();},{}));
     
 
     autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
-    // autoChooser1 = pathplanner::AutoBuilder::buildAutoChooser("RED LEFT AUTO");
+     //autoChooser1 = pathplanner::AutoBuilder::buildAutoChooser("RED LEFT AUTO");
     // autoChooser2 = pathplanner::AutoBuilder::buildAutoChooser("RED RIGHT AUTO");
     // autoChooser3 = pathplanner::AutoBuilder::buildAutoChooser("BLUE LEFT AUTO");
     // autoChooser4 = pathplanner::AutoBuilder::buildAutoChooser("BLUE RIGHT AUTO");
-    // autoChooser5 = pathplanner::AutoBuilder::buildAutoChooser("test");
-    frc::SmartDashboard::PutData("Auto Chooser", &autoChooser);
-    //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser1);
+    //autoChooser5 = pathplanner::AutoBuilder::buildAutoChooser("SHOOTING AUTO");
+    frc::SmartDashboard::PutData("Auto Choosper", &autoChooser);
+      //frc::SmartDashboard::PutData("Auto Mode", &autoChooser1);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser2);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser3);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser4);
-    //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser5);
+   // frc::SmartDashboard::PutData("Auto Mode", &autoChooser5);
 
+//      pathplanner::NamedCommands::registerCommand("Shooter", std::move(
+//         frc2::cmd::Run(
+//             [this] {Shoot1.AutoShoot();},
+//         {&Shoot1}
+//     ).WithTimeout(units::second_t(5))
+// ));
     ConfigureBindings();
 }
+
+ShooterSystem& RobotContainer::GetShooter(){
+    return Shoot1;
+}
+
 
 
 void RobotContainer::ConfigureBindings()

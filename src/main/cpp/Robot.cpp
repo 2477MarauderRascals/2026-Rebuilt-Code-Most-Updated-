@@ -18,12 +18,12 @@ Robot::Robot() {/*
    * configuration parameters for the SPARK MAXes that we will set below.
    */
   SparkFlexConfig globalConfig;
-  SparkFlexConfig LeftMSrConfig;
-  SparkFlexConfig RightMSConfig;
-  SparkFlexConfig BottomLeftMSConfig;
+  // SparkFlexConfig LeftMSrConfig;
+  // SparkFlexConfig RightMSConfig;
+  // SparkFlexConfig BottomLeftMSConfig;
   SparkFlexConfig IntakeRConfig;
   SparkFlexConfig IntakeUDConfig;
-  SparkFlexConfig ConveyorConfig;
+  // SparkFlexConfig ConveyorConfig;
   /*
    * Set parameters that will apply to all SPARKs. We will also use this as
    * the left leader config.
@@ -39,10 +39,10 @@ Robot::Robot() {/*
   // Apply the global config and set the leader SPARK for follower mode
   //This should allow the right motor to go at the came time as the left motor//
   //The true next to the m_leftMS makes it inverted (2/24/26)//
- LeftMSrConfig.Apply(globalConfig);
-  RightMSConfig.Apply(globalConfig);
-  BottomLeftMSConfig.Apply(globalConfig);
-  ConveyorConfig.Apply(globalConfig);
+//  LeftMSrConfig.Apply(globalConfig);
+//   RightMSConfig.Apply(globalConfig);
+//   BottomLeftMSConfig.Apply(globalConfig);
+//   ConveyorConfig.Apply(globalConfig);
   IntakeRConfig.Apply(globalConfig);
  IntakeUDConfig.Apply(globalConfig);
  
@@ -68,24 +68,24 @@ Robot::Robot() {/*
    * the SPARK MAX loses power. This is useful for power cycles that may occur
    * mid-operation.
    */
-  ;m_leftMS.Configure(LeftMSrConfig,
-                         rev::ResetMode::kResetSafeParameters,
-                         rev::PersistMode::kPersistParameters);
-  m_rightMS.Configure(RightMSConfig,
-                           rev::ResetMode::kResetSafeParameters,
-                           rev::PersistMode::kPersistParameters);
- m_BottomLeftMS.Configure(BottomLeftMSConfig,
-                          rev::ResetMode::kResetSafeParameters,
-                          rev::PersistMode::kPersistParameters);
+//   ;m_leftMS.Configure(LeftMSrConfig,
+//                          rev::ResetMode::kResetSafeParameters,
+//                          rev::PersistMode::kPersistParameters);
+//   m_rightMS.Configure(RightMSConfig,
+//                            rev::ResetMode::kResetSafeParameters,
+//                            rev::PersistMode::kPersistParameters);
+//  m_BottomLeftMS.Configure(BottomLeftMSConfig,
+//                           rev::ResetMode::kResetSafeParameters,
+//                           rev::PersistMode::kPersistParameters);
 m_IntakeR.Configure(IntakeRConfig,
                           rev::ResetMode::kResetSafeParameters,
                           rev::PersistMode::kPersistParameters);
 m_IntakeUD.Configure(IntakeUDConfig,
                           rev::ResetMode::kResetSafeParameters,
                           rev::PersistMode::kPersistParameters);
-m_Conveyor.Configure(ConveyorConfig,
-                          rev::ResetMode::kResetSafeParameters,
-                          rev::PersistMode::kPersistParameters);
+// m_Conveyor.Configure(ConveyorConfig,
+//                           rev::ResetMode::kResetSafeParameters,
+//                           rev::PersistMode::kPersistParameters);
 
 }
 
@@ -116,7 +116,7 @@ void Robot::RobotPeriodic() {
 
 }
 
-// void Robot::ShooterAuto(){
+//\\ void Robot::ShooterAuto(){
 //    m_timer.Reset();
 //         m_timer.Start();
 //   if (m_timer.Get() <= 5.0_s){
@@ -188,31 +188,28 @@ void Robot::TeleopPeriodic() {/**
 
 
   if (joystick.GetRightTriggerAxis()>= 0.8) {
-    m_rightMS.Set(0.8);
+   m_container.GetShooter().ShooterSpeed1();
     m_IntakeR.Set(0.45);
-    m_Conveyor.Set(0.1);
-    m_leftMS.Set(-0.8);
+    
 
   std::cout <<"message testing hitting right bumper button " << std::endl;
   } 
   
   else if (joystick.GetRightTriggerAxis()>= 0.2) {
-    m_rightMS.Set(0.55);
-    m_Conveyor.Set(0.1);
-    m_leftMS.Set(-0.55);
+    m_container.GetShooter().ShooterSpeed2();
     m_IntakeR.Set(0.45);
   }
 
   else {
-    m_leftMS.Set(0);
-    m_rightMS.Set(0);
+     m_container.GetShooter().ShooterStop1();
+     m_container.GetShooter().ShooterStop2();
     m_IntakeR.Set(0);
-    m_Conveyor.Set(0);
+   
   }
 //When the button is pressed, set motors to go down to limit and set intake to run and when it hit the limit, 
 //stop elevation but still continue running intake. When relased buttoned set motors go to up until you hit the limit//
-if (joystick.GetLeftBumper()) {
-    m_BottomLeftMS.Set(0.8);
+if (joystick.GetLeftBumperButton()) {
+     m_container.GetShooter().ShooterIn();
     //change GetPosition to 1 if it starts to moves on its own//
     //Doing this should make it so that it doesn't move on its own.// 
 
@@ -220,13 +217,12 @@ if (joystick.GetLeftBumper()) {
 //{ m_IntakeUD.Set(0);}else{ m_IntakeUD.Set(0.1);}
 
   //std::cout <<"message testing hitting left bumper button " << std::endl;
-  }else if (joystick.GetRightBumper()){
-    m_IntakeR.Set(-0.5);
-    m_BottomLeftMS.Set(-0.4);
+  }else if (joystick.GetRightBumperButton()){
+    m_container.GetShooter().ShooterOut();
   }
 
   else{
-    m_BottomLeftMS.Set(0);
+    m_container.GetShooter().ShooterStop2();
         //change GetPosition to 0 if it starts to move on 
 
     //if(m_UDencounder.GetPosition()==)

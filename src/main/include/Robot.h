@@ -11,7 +11,7 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
 #include <optional>
-
+#include "subsystems/ShooterSystem.h"
 #include "RobotContainer.h"
 #include <frc/XboxController.h>
 
@@ -41,8 +41,6 @@ public:
     void TestInit() override;
     void TestPeriodic() override;
     void TestExit() override;
-    //void ShooterAuto();
-
 private:
   // Initialize the SPARKs
   //Added testing motors (2/19/26)//
@@ -50,12 +48,12 @@ private:
   //Intake R is the motor that moves the intake rollers//
   //Inatake UD is the motor that moves the intake up and down and is the one with the sensor//
   //Names can change(//
-  SparkFlex m_leftMS{4, SparkFlex::MotorType::kBrushless};
-  SparkFlex m_rightMS{5, SparkFlex::MotorType::kBrushless};
-  SparkFlex m_BottomLeftMS{6, SparkFlex::MotorType::kBrushless};
+//   SparkFlex m_leftMS{4, SparkFlex::MotorType::kBrushless};
+//   SparkFlex m_rightMS{5, SparkFlex::MotorType::kBrushless};
+//   SparkFlex m_BottomLeftMS{6, SparkFlex::MotorType::kBrushless};
   SparkFlex m_IntakeR{7, SparkFlex::MotorType::kBrushless};
   SparkFlex m_IntakeUD{8, SparkFlex::MotorType::kBrushless};
-  SparkFlex m_Conveyor{9, SparkFlex::MotorType::kBrushless};
+  //SparkFlex m_Conveyor{9, SparkFlex::MotorType::kBrushless};
   // This is the line of code, when using an absolute encoder with a SparkFlex motor (3/6/26)//
   SparkAbsoluteEncoder m_UDencounder = m_IntakeUD.GetAbsoluteEncoder();
   double EV1=0; 
