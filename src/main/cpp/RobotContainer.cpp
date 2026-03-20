@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+#include <iostream>
 #include "RobotContainer.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Commands.h>
@@ -14,27 +14,29 @@
 RobotContainer::RobotContainer()
 {
 
-    
+//     std::cout<<"testing"<<pathplanner::AutoBuilder::isConfigured()<<std::endl;
 
-    autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
-     //autoChooser1 = pathplanner::AutoBuilder::buildAutoChooser("RED LEFT AUTO");
+//          pathplanner::NamedCommands::registerCommand("Shooter", std::move(
+//         frc2::cmd::Run(
+//             [this] {Shoot1.AutoShoot();},
+//         {&Shoot1}
+//     ).WithTimeout(units::second_t(5))
+// ));
+
+    //autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
+    // autoChooser1 = pathplanner::AutoBuilder::buildAutoChooser("RED LEFT AUTO");
     // autoChooser2 = pathplanner::AutoBuilder::buildAutoChooser("RED RIGHT AUTO");
     // autoChooser3 = pathplanner::AutoBuilder::buildAutoChooser("BLUE LEFT AUTO");
     // autoChooser4 = pathplanner::AutoBuilder::buildAutoChooser("BLUE RIGHT AUTO");
     //autoChooser5 = pathplanner::AutoBuilder::buildAutoChooser("SHOOTING AUTO");
-    frc::SmartDashboard::PutData("Auto Choosper", &autoChooser);
+    //frc::SmartDashboard::PutData("Auto Choosper", &autoChooser);
       //frc::SmartDashboard::PutData("Auto Mode", &autoChooser1);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser2);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser3);
     //  frc::SmartDashboard::PutData("Auto Mode", &autoChooser4);
    // frc::SmartDashboard::PutData("Auto Mode", &autoChooser5);
 
-//      pathplanner::NamedCommands::registerCommand("Shooter", std::move(
-//         frc2::cmd::Run(
-//             [this] {Shoot1.AutoShoot();},
-//         {&Shoot1}
-//     ).WithTimeout(units::second_t(5))
-// ));
+
     ConfigureBindings();
 }
 

@@ -38,10 +38,13 @@ private:
     frc2::CommandXboxController joystick{0};
 
 public:
+    ShooterSystem Shoot1;
+
+
     subsystems::CommandSwerveDrivetrain drivetrain{TunerConstants::CreateDrivetrain()};
-    ShooterSystem& GetShooter();
 
 private:
+
     /* Path follower */
     frc::SendableChooser<frc2::Command *> autoChooser;
     frc::SendableChooser<frc2::Command *> autoChooser1;
@@ -49,13 +52,14 @@ private:
    frc::SendableChooser<frc2::Command *> autoChooser3;
    frc::SendableChooser<frc2::Command *> autoChooser4;
     frc::SendableChooser<frc2::Command *> autoChooser5;
-    ShooterSystem Shoot1;
+    
 
     
 
 
 public:
     RobotContainer();
+    ShooterSystem& GetShooter();
 
 
     frc2::Command *GetAutonomousCommand();
