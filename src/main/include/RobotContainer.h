@@ -14,10 +14,14 @@ class Robot;
 
 class RobotContainer {
 private:
-    units::meters_per_second_t MaxSpeed = 1.0 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
+  //MaxSpeed controlls driving speed//
+    //Changed MaxSpeed from 1.0 to 0.25 (make sure to keep the *) (7/24/2026)//
+    units::meters_per_second_t MaxSpeed = 0.25 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
     //changed MaxAngularRate from 0.75 to 0.6. makes robot a little slower (2/19/26)//
     //sped up to .625 from .5 foor the Swerve Turning Velocity M.Davin (3/11/26)
-    units::radians_per_second_t MaxAngularRate = 0.625_tps; // 3/4 of a rotation per second max angular velocity
+    //lowered speed to 0.1 (7/24/2026)//
+    //MaxAngluarRate controlls angle speed// 
+    units::radians_per_second_t MaxAngularRate = 0.25_tps; // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     swerve::requests::FieldCentric drive = swerve::requests::FieldCentric{}
