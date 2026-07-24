@@ -174,11 +174,11 @@ void Robot::TeleopPeriodic() {/**
  // frc::SmartDashboard::PutNumber("Left Trigger", joystick.GetLeftTriggerAxis());
  // End: M.Davin 3/11/26
 
-  if (position_degrees <= 0.22) {
+  if (position_degrees <= 0.05) {
     m_LEDStrip.Set(0.87); //solid blue when intake is up
   }
 
-  else if (position_degrees >= 0.57) {
+  else if (position_degrees >= 0.330) {
     m_LEDStrip.Set (0.67); //solid gold when intake is down
   }
 
@@ -253,28 +253,28 @@ if (joystick.GetLeftBumper()) {
 if (joystick.GetLeftTriggerAxis() >= 0.2) {
 
 
-// if the intake is DOWN start moving the intake UP to position 0.22
-  if (position_degrees >= 0.55 && !m_IntakeUDmovingDOWN && !m_IntakeUDmovingUP) {
+// if the intake is DOWN start moving the intake UP to position 0.05
+  if (position_degrees >= 0.05 && !m_IntakeUDmovingDOWN && !m_IntakeUDmovingUP) {
     m_IntakeUDmovingUP = true; 
   } 
  
-// if the intake is UP start moving the intake DOWN to position 0.55
+// if the intake is UP start moving the intake DOWN to position 0.330
   else if (!m_IntakeUDmovingDOWN && !m_IntakeUDmovingUP) {
     m_IntakeUDmovingDOWN = true;
   }
 
-// the intake will continue moving UP until it STOPS at position 0.22
+// the intake will continue moving UP until it STOPS at position 0.05
     if (m_IntakeUDmovingUP) {
-      if (position_degrees > 0.22) {
+      if (position_degrees > 0.05) {
         m_IntakeUD.Set(-0.145);
       } 
       else {
         m_IntakeUD.Set(0);
      }
     }
-// the intake will continue moving DOWN until it STOPS at position 0.55
+// the intake will continue moving DOWN until it STOPS at position 0.330
     else if (m_IntakeUDmovingDOWN) {
-      if (position_degrees < 0.55) {
+      if (position_degrees < 0.330) {
         m_IntakeUD.Set(0.08);
       } 
       else {
